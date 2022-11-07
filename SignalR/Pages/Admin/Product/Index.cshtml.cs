@@ -29,11 +29,14 @@ namespace SignalR.Pages.Product
 
         public const int pageSize = 5;
 
-        public static List<Models.Product> listExcelProduct; 
+        public static List<Models.Product> listExcelProduct = new List<Models.Product>();
+
+        [BindProperty(SupportsGet = true)]
+        public String IsFilter { get; set; }
 
         public void OnGet()
         {
-            if (currentPage < 1)
+            if (currentPage < 1 || (IsFilter != null && IsFilter.Equals("true") && currentPage > 1))
             {
                 currentPage = 1;
             }

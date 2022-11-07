@@ -32,12 +32,14 @@
                         }
                     </select>
                     <input asp-for="search" value="@Model.search" hidden>
+                    <input type="hidden" value="true" asp-for="IsFilter" />
                     <input type="submit" value="Filter">
                 </form>
             </div>
             <div id="product-title-2" style="width: 55%;">
                 <form method="get">
                     <input asp-for="categoryChoose" value="@Model.categoryChoose" hidden>
+                    <input type="hidden" value="true" asp-for="IsFilter" />
                     <input asp-for="search" placeholder="Enter product name to search" />
                     <input type="submit" value="Search" />
                 </form>

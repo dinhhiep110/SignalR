@@ -27,6 +27,7 @@
                 <form method="get">
                     From: <input asp-for="dateFrom" value="@dateFrom" type="date" />
                     To: <input asp-for="dateTo" value="@dateTo" type="date" />
+                    <input type="hidden" value="true" asp-for="IsFilter" />
                     <input type="submit" value="Filter">
                 </form>
             </div>

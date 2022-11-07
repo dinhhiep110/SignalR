@@ -9,7 +9,6 @@
 @{
     int currentPage = Model.pageCurrent;
     int countPages = Model.totalPages;
-    bool isFilter = Model.isFilter;
     var generateUrl = Model.generateUrl;
 
     if (currentPage > countPages)
@@ -17,10 +16,6 @@
 
     if (countPages <= 1) return;
 
-    if (isFilter)
-    {
-        currentPage = 1;
-    }
 
     int? preview = null;
     int? next = null;
@@ -45,6 +40,10 @@
         {
             pagesRanges.Add(currentPage + i);
             //remain--;
+        }
+        else
+        {
+            break;
         }
 
         //if (currentPage - i >= 1)

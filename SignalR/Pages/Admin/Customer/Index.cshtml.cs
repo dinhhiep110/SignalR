@@ -25,11 +25,14 @@ namespace SignalR.Pages.Admin.Customer
         public string search { get; set; }
         public int totalPages { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public String IsSearch { get; set; }
+
         public const int pageSize = 5;
 
         public async Task<IActionResult> OnGet()
         {
-            if (currentPage < 1)
+            if (currentPage < 1 ||(IsSearch != null && IsSearch.Equals("true") && currentPage > 1))
             {
                 currentPage = 1;
             }

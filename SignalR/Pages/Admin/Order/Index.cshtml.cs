@@ -35,9 +35,12 @@ namespace SignalR.Pages.Admin.Order
 
         private static List<Models.Order> listExcelOrders = new List<Models.Order>();
 
+        [BindProperty(SupportsGet = true)]
+        public String IsFilter { get; set; }
+
         public void OnGet()
         {
-            if (currentPage < 1)
+            if (currentPage < 1 || (IsFilter != null && IsFilter.Equals("true") && currentPage > 1))
             {
                 currentPage = 1;
             }

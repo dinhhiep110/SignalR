@@ -9,8 +9,6 @@
 
         public string search { get; set; }
 
-        public bool isFilter { get; set; }
-
         public Func<int?, string> generateUrl { get; set; }
     }
 }

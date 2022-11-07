@@ -1,21 +1,39 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SignalR.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SignalR.Pages.Account
 {
     public class ForgotModel : PageModel
     {
+        private readonly PRN221DBContext dbContext;
+
+        public ForgotModel(PRN221DBContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
+        [Required(ErrorMessage = "Email is required")]
+        [BindProperty,DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
         public void OnGet()
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            /*if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var account = _context.Persons;
-            }*/
-            return Redirect("");
+                var account = dbContext.Accounts.FirstOrDefault(a => a.Email == Email);
+                if(account == null)
+                {
+                    ViewData["errMsg"] = "Email is not existed";
+                    return Page();
+                }
+            }
+            return Redirect("/Account/Login");
         }
     }
 }
