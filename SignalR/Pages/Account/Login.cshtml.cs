@@ -31,22 +31,30 @@ namespace SignalR.Pages.Account
             }
 
             var acc = await dbContext.Accounts
-                .SingleOrDefaultAsync(a => a.Email.Equals(Account.Email) && a.Password.Equals(Account.Password));
-            var customer = await dbContext.Customers.SingleOrDefaultAsync(c => c.CustomerId == acc.CustomerId);
+                .FirstOrDefaultAsync(a => a.Email.Equals(Account.Email) && a.Password.Equals(Account.Password));
 
             if (acc == null)
             {
                 ViewData["msg"] = "Email/ Password is wrong";
                 return Page();
             }
-
+            if (HttpContext.Session.GetString("cart") != null)
+            {
+                HttpContext.Session.Remove("cart");
+            }
+            if(HttpContext.Session.GetString("CartCount") != null)
+            {
+                HttpContext.Session.Remove("CartCount");
+            }
+            HttpContext.Session.SetString("CustSession", JsonSerializer.Serialize(acc));
+            var customer = await dbContext.Customers.FirstOrDefaultAsync(c => c.CustomerId == acc.CustomerId);
             if (customer != null && !customer.IsActive.Value)
             {
                 ViewData["msg"] = "Your Account Cannot Login Into System";
+                HttpContext.Session.Remove("CustSession");
                 return Page();
             }
-
-            HttpContext.Session.SetString("CustSession", JsonSerializer.Serialize(acc));
+            HttpContext.Session.SetInt32("CartCount", 0);
             if (acc.Role == 1)
             {
                 HttpContext.Session.SetString("IsAdmin", "Admin");

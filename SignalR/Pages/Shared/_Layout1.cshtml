@@ -17,10 +17,9 @@
             </div>
             <div id="banner">
                 <ul>
-
+                    <li><a href="~/Cart">Cart: @Context.Session.GetInt32("CartCount")</a></li>   
                     @if (Context.Session.GetString("CustSession") != null)
                     {
-                        <li><a href="~/Cart">Cart: 0</a></li>
                         <li><a href="~/Account/Profile">Profile</a></li>
                         <li><a href="~/Account/Logout">SignOut</a></li>
                     }
@@ -29,6 +28,7 @@
                         <li><a href="~/Account/Login">SignIn</a></li>
                         <li><a href="~/Account/SignUp">SignUp</a></li>
                     }
+                    
 
                 </ul>
             </div>

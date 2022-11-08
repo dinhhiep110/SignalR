@@ -28,19 +28,19 @@ namespace SignalR.Pages.Cart
                 return NotFound();
             }
 
-            if (HttpContext.Session.GetString("CustSession") == null)
-            {
-                return Redirect("/Account/Login");
-            }
+            //if (HttpContext.Session.GetString("CustSession") == null)
+            //{
+            //    return Redirect("/Account/Login");
+            //}
 
-            Auth = JsonSerializer.Deserialize<SignalR.Models.Account>(HttpContext.Session.GetString("CustSession"));
+            //Auth = JsonSerializer.Deserialize<SignalR.Models.Account>(HttpContext.Session.GetString("CustSession"));
 
-            if (Auth == null)
-            {
-                return Redirect("/Account/Login");
-            }
+            //if (Auth == null)
+            //{
+            //    return Redirect("/Account/Login");
+            //}
 
-            SignalR.Models.Product product = (await dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == id));
+            Models.Product product = (await dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == id));
 
             if (product == null || product.UnitsInStock == 0)
             {
@@ -73,6 +73,7 @@ namespace SignalR.Pages.Cart
                         
 
                     HttpContext.Session.SetString("cart", JsonSerializer.Serialize(list));
+                    HttpContext.Session.SetInt32("CartCount", list.Count);
                     TempData["success"] = "Add to cart successfull";
                 }
                 catch (Exception e)

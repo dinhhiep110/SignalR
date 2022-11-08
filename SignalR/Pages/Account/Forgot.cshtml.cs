@@ -4,6 +4,9 @@ using SignalR.Models;
 using System.Net.Mail;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Text.Json;
+using System.Text;
+using SignalR.Helper;
 
 namespace SignalR.Pages.Account
 {
@@ -17,7 +20,7 @@ namespace SignalR.Pages.Account
         }
 
         [Required(ErrorMessage = "Email is required")]
-        [BindProperty,DataType(DataType.EmailAddress)]
+        [BindProperty, DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         public void OnGet()
@@ -29,34 +32,36 @@ namespace SignalR.Pages.Account
             if (ModelState.IsValid)
             {
                 var account = dbContext.Accounts.FirstOrDefault(a => a.Email == Email);
-                if(account == null)
+                if (account == null)
                 {
                     ViewData["errMsg"] = "Email is not existed";
                     return Page();
                 }
-                var body = $@"<p>Thank you, we have received your request for your password!</p>
+                account.Password = RandomPassword(6);
+                await dbContext.SaveChangesAsync();
+                var subject = "FORGOT PASSWORD";
+                var body = $@"<h2>Thank you, we have received your request for your password!</h2>
                     Please don't leak this email to everyone.  Thanks!<br/>";
-                using (var smtp = new SmtpClient())
-                {
-                    var credential = new NetworkCredential
-                    {
-                        UserName = "example@gmail.com",  // replace with valid value
-                        Password = "password"  // replace with valid value
-                    };
-                    smtp.Credentials = credential;
-                    smtp.Host = "smtp.gmail.com";
-                    smtp.Port = 587;
-                    smtp.EnableSsl = true;
-                    var message = new MailMessage();
-                    message.To.Add(Email);
-                    message.Subject = "Fourth Coffee - New Order";
-                    message.Body = body;
-                    message.IsBodyHtml = true;
-                    message.From = new MailAddress("shop@cart.com");
-                    await smtp.SendMailAsync(message);
-                }
+                body += $"<p> Your New Password is: <b>{account.Password}</b> </p>";
+                MailHelper.SendMail(Email, body, subject);
             }
             return Redirect("/Account/Login");
+        }
+
+        private string RandomPassword(int length)
+        {
+            // creating a StringBuilder object()
+            StringBuilder str_build = new StringBuilder();
+            Random random = new Random();
+            char letter;
+            for (int i = 0; i < length; i++)
+            {
+                double flt = random.NextDouble();
+                int shift = Convert.ToInt32(Math.Floor(25 * flt));
+                letter = Convert.ToChar(shift + 65);
+                str_build.Append(letter);
+            }
+            return str_build.ToString();
         }
     }
 }

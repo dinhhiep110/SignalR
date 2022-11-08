@@ -21,9 +21,10 @@
     <form method="post">
         <div class="path">Personal information</b></div>
         <div class="content-main">
-            
-            <div id="profile-content">
 
+            <div id="profile-content">
+                <span class="msg-error">@ViewData["fail"]</span><br />
+                <span class="msg-success">@ViewData["success"]</span><br />
                 <div class="profile-content-col">
                     <div>
                         Company name: <br />
@@ -37,8 +38,6 @@
                     </div>
                     <div>
                         <input type="submit" value="Edit info" /><br />
-                        <span class="msg-error">@ViewData["fail"]</span><br />
-                        <span class="msg-success">@ViewData["success"]</span><br />
                     </div>
                 </div>
                 <div class="profile-content-col">
