@@ -13,7 +13,7 @@ namespace SignalR.Helper
                 var credential = new NetworkCredential
                 {
                     UserName = "hiepddhe153656@fpt.edu.vn",  // replace with valid value
-                    Password = "14122001h"  // replace with valid value
+                    Password = "*********"  // replace with valid value
                 };
                 smtp.Credentials = credential;
                 smtp.Host = "smtp.gmail.com";
@@ -36,7 +36,7 @@ namespace SignalR.Helper
                 var credential = new NetworkCredential
                 {
                     UserName = "hiepddhe153656@fpt.edu.vn",  // replace with valid value
-                    Password = "14122001h"  // replace with valid value
+                    Password = "*********"  // replace with valid value
                 };
                 smtp.Credentials = credential;
                 smtp.Host = "smtp.gmail.com";
